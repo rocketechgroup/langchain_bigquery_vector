@@ -1,0 +1,6 @@
+langchain
+langchain-openai
+google-cloud-bigquery
+langchain-google-genai
+beautifulsoup4
+Flask

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Flask App</title>
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mx-auto mt-4">
+    <form action="/" method="POST">
+        <div class="flex flex-col mb-4">
+            <label for="user_text" class="mb-2 text-lg font-bold">Ask me a question:</label>
+            <input type="text" name="user_text" required="required" id="user_text"
+                   class="border rounded-md p-2 focus:outline-none">
+            <label for="context" class="mt-4 text-lg font-bold">Select context:</label>
+            <select name="context" id="context" class="border rounded-md p-2 focus:outline-none">
+                <option value="langsmith_pricing">Langsmith Pricing</option>
+                <option value="cloud_workstations">Cloud Workstations</option>
+                <option value="bigframes">BigFrames</option>
+                <option value="dataplex">Dataplex</option>
+            </select>
+        </div>
+        <button type="submit" class="mt-4 bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-700">Submit</button>
+    </form>
+    <p class="mt-4 text-lg font-bold">Response:</p>
+    <div id="response-container" class="border border-gray-300 bg-yellow-100 p-4 m-2">
+        {{ response_text }}
+    </div>
+</div>
+<script>
+    const responseTextElement = document.getElementById('response-text');
+
+    function updateResponseText(text) {
+        responseTextElement.textContent = text;
+    }
+
+    function prettifyText(divId) {
+        const divElement = document.getElementById(divId);
+        if (!divElement) return; // Stop if DIV isn't found
+
+        let rawText = divElement.textContent.trim();
+
+        // Basic sentence detection (customize ending characters as needed)
+        const sentences = rawText.split(/(?<!\d)\.(?=\s+|[.!?;])/);
+
+        // Build new HTML with paragraphs
+        let prettifiedHtml = '';
+        for (const sentence of sentences) {
+            prettifiedHtml += `<p class="p-4 m-2">${sentence.trim()}</p>`;
+        }
+
+        // Update the DIV with formatted content
+        divElement.innerHTML = prettifiedHtml;
+    }
+
+    prettifyText('response-container');
+</script>
+</body>
+</html>
